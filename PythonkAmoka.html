@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cube Touch Match</title>
+    <style>
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        width: 300px;
+        height: 300px;
+        margin: 0 auto;
+      }
+      .cell {
+        background-color: lightgray;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid"></div>
+    <script src="cube-touch-match.js"></script>
+  </body>
+  <script>
+    const colors = ["red", "green", "blue", "yellow", "purple", "orange"];
+let selectedCells = [];
+
+// Create the game grid
+const grid = document.querySelector(".grid");
+for (let i = 0; i < 9; i++) {
+  const cell = document.createElement("div");
+  cell.classList.add("cell");
+  cell.dataset.color = colors[Math.floor(Math.random() * colors.length)];
+  cell.addEventListener("click", () => {
+    if (selectedCells.length < 2 && !selectedCells.includes(cell)) {
+      selectedCells.push(cell);
+      cell.style.backgroundColor = cell.dataset.color;
+      if (selectedCells.length === 2) {
+        setTimeout(() => {
+          if (
+            selectedCells[0].dataset.color === selectedCells[1].dataset.color
+          ) {
+            selectedCells.forEach((cell) => {   
+              cell.style.backgroundColor = "white";
+              cell.removeEventListener("click", handleClick);
+            });
+          } else {
+            selectedCells.forEach((cell) => {
+              cell.style.backgroundColor = "lightgray";
+            });
+          }
+          selectedCells = [];
+        }, 500);
+      }
+    }
+  });
+  grid.appendChild(cell);
+}
+
+  </script>
+</html>
+
